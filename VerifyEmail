@@ -1,0 +1,60 @@
+package com.xero.SignUP;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Properties;
+
+import javax.mail.Flags;
+import javax.mail.Folder;
+import javax.mail.Session;
+import javax.mail.search.SubjectTerm;
+
+import org.bouncycastle.util.Store;
+
+import com.google.protobuf.Message;
+
+public class VerifyEmail {
+	
+	public static void main(String[] args) throws Exception{
+	Properties props = System.getProperties();
+	props.setProperty("mail.store.protocol", "imaps");
+	
+		Session session = Session.getDefaultInstance(props, null);
+		javax.mail.Store store= session.getStore("impas");
+		store.connect("imap.gmail.com","jayonlinestar@gmail.com","imonline");
+		
+		Folder folder= store.getFolder("INBOX");
+		folder.open(Folder.READ_WRITE);
+		
+		javax.mail.Message[] messages= null;
+		boolean isMailFound = false;
+		javax.mail.Message mailFromXero = null;
+		
+		for(int i=0; i < 5; i++){
+			messages= folder.search(new SubjectTerm("Activate your account"), folder.getMessages());
+		}
+		
+		for(javax.mail.Message mail: messages){
+			if(!mail.isSet(Flags.Flag.SEEN)){
+				mailFromXero=mail;
+				System.out.println("count");
+				isMailFound= true;
+			}
+		}
+		
+		if(!isMailFound){
+			throw new Exception( " Cant find email");
+		} else {
+			String line;
+			StringBuffer buffer = new StringBuffer();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(mailFromXero.getInputStream()));
+			while((line = reader.readLine()) !=null){
+				buffer.append(line);
+			}
+			System.out.println(buffer);
+			
+			String registrationURL= buffer.toString().split("https://login.xero.com/c?token=")[0].split("href=")[1];
+			System.out.println(registrationURL);
+		}
+	}
+}
