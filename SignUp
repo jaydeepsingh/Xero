@@ -1,0 +1,54 @@
+public class SignUp {
+
+	WebDriver driver;
+	
+	  @BeforeTest
+	  public void beforeTest() {
+		  driver= new FirefoxDriver();
+		  driver.get("http://www.xero.com/signup");
+	  }
+
+	  @AfterTest(enabled=false)
+	  public void afterTest() {
+		  
+	  }
+	  
+	  @Test
+	  public void checkdropdown() {
+	  
+		
+		  WebElement w;
+		  w =  driver.findElement(By.name("FirstName"));
+		  w.clear();  
+		  w.sendKeys("test"); 
+		  
+		  w= driver.findElement(By.name("LastName"));
+		  w.clear();  
+		  w.sendKeys("test"); 
+		  
+		  w= driver.findElement(By.name("EmailAddress"));
+		  w.clear();  
+		  w.sendKeys("jayonlinestar@gmail.com"); 
+		  
+		  w= driver.findElement(By.name("PhoneNumber"));
+		  w.clear();  
+		  w.sendKeys("9999999999"); 
+		  
+		  WebElement dropDownListBox = driver.findElement(By.className("select2-choice"));
+		  dropDownListBox.click();
+	      
+	      w= driver.findElement(By.className("select2-focused"));
+	      w.sendKeys("New Zealand");
+	      //WebElement dropDownListBox1 = driver.findElement(By.className("select2-results"));
+	      //Select clickThis = new Select(dropDownListBox1);
+	      // clickThis.selectByIndex(1);
+	      // dropDownListBox1.selectByIndex(1);
+	      w.sendKeys(Keys.RETURN);
+	      
+	      driver.findElement(By.name("TermsAccepted")).click();
+	      driver.findElement(By.xpath("//button[@type='submit']")).click();
+	  
+	  }
+
+}
+
