@@ -1,0 +1,118 @@
+package com.xero.SignUP;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchWindowException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+public class Login {
+
+	
+	WebDriver driver;
+	
+	  @BeforeTest
+	  public void beforeTest() {
+		  driver= new FirefoxDriver();
+		  driver.get("https://login.xero.com/");
+	  }
+
+	  @AfterTest(enabled=false)
+	  public void afterTest() {
+		  
+	  }
+	  
+	  @Test
+	  public void loginAndNaivgateToSales() {
+	  
+		
+		  WebElement w;
+		  w =  driver.findElement(By.xpath("//input[@id='email']"));
+		  w.clear();  
+		  w.sendKeys("jaydeep.bhati@adp.com"); 
+		  
+		  w= driver.findElement(By.xpath("//input[@id='password']"));
+		  w.clear();  
+		  w.sendKeys("adpadp10"); 
+		  
+		  try {
+		  driver.findElement(By.xpath("//a[@id='submitButton']")).click();
+		  Thread.sleep(15000);
+		  
+		  driver.findElement(By.xpath("//li[@tabindex='0']")).click();
+		
+		  java.util.Set<String> allWindows = driver.getWindowHandles();
+		  if(!allWindows.isEmpty()) {
+			  for (String windowId : allWindows) {
+				  		
+				  		driver.switchTo().window(windowId);
+				  		driver.findElement(By.xpath("//a[@href='/Accounts/Receivable/Dashboard/']")).click(); 
+				  		Thread.sleep(3000);
+				  	 
+			  }
+		  }
+		  //navigate to repeating invoice
+		  WebElement newInvoice = driver.findElement(By.id("ext-gen1037")).findElement(By.tagName("span"));
+		  newInvoice.click();
+		  java.util.Set<String> allWindows1 = driver.getWindowHandles();
+		  if(!allWindows1.isEmpty()) {
+			  for (String windowId : allWindows1) {
+				  		
+				  		driver.switchTo().window(windowId);
+				  		driver.findElement(By.xpath("//a[@href='/RepeatTransactions/Edit.aspx?type=AR']")).click(); 
+				  		
+			  }
+		  }
+		  
+		  //create invoice
+		  WebElement createInvoice = driver.findElement(By.id("PeriodUnit"));
+		  createInvoice.clear();
+		  createInvoice.sendKeys("2");
+		  
+		  createInvoice = driver.findElement(By.id("TimeUnit_value"));
+		  createInvoice.clear();
+		  createInvoice.sendKeys("Month(s)");
+		  
+		  createInvoice = driver.findElement(By.id("StartDate"));
+		  createInvoice.clear();
+		  createInvoice.sendKeys("10/01/2014");
+		  
+		  createInvoice = driver.findElement(By.id("DueDateDay"));
+		  createInvoice.clear();
+		  createInvoice.sendKeys("15");
+		  
+		  createInvoice = driver.findElement(By.id("ext-gen47")).findElement(By.tagName("input"));;
+		  createInvoice.sendKeys("testing1");
+		  Thread.sleep(2000);
+		  
+		  
+		
+		 
+		driver.findElement(By.xpath("//div[@class='x-grid3-body']")).findElement(By.xpath("//div[1]/table/tbody/tr/td[2]")).click();
+		Thread.sleep(3000);
+		createInvoice = driver.findElement(By.xpath("//div[@class='x-grid3-scroller']")).findElement(By.xpath("//div[2]/div/input[starts-with(@id, 'ext-')]"));
+		createInvoice.sendKeys("Tools");
+		createInvoice.sendKeys(Keys.RETURN);
+		Thread.sleep(5000);
+		  
+		 driver.findElement(By.id("saveAsDraft")).click();
+		 driver.findElement(By.className("float-right")).findElement(By.tagName("button")).click();
+		 Thread.sleep(3000);
+		 
+		 		  
+		  } catch (InterruptedException e) {
+				e.printStackTrace();
+				System.out.println("Couldnt Reach to accounts");
+			}
+			 
+		  
+		 
+		 
+	 }
+}
+	  
