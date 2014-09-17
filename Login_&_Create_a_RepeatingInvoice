@@ -1,3 +1,5 @@
+//****Script to Log into the application and create a repeated invoice******/
+
 package com.xero.SignUP;
 
 import org.openqa.selenium.By;
@@ -18,32 +20,31 @@ public class Login {
 	
 	  @BeforeTest
 	  public void beforeTest() {
+	//open a browser and navigate to xero login page
 		  driver= new FirefoxDriver();
 		  driver.get("https://login.xero.com/");
 	  }
 
 	  @AfterTest(enabled=false)
 	  public void afterTest() {
-		  
+	//left it blank intentionally so that window does not close automatically and user can view the created invoice.	  
 	  }
 	  
 	  @Test
 	  public void loginAndNaivgateToSales() {
 	  
-		
+	//Login into the application
 		  WebElement w;
-		  w =  driver.findElement(By.xpath("//input[@id='email']"));
+		  w = driver.findElement(By.xpath("//input[@id='email']"));
 		  w.clear();  
 		  w.sendKeys("jaydeep.bhati@adp.com"); 
-		  
-		  w= driver.findElement(By.xpath("//input[@id='password']"));
+		  w = driver.findElement(By.xpath("//input[@id='password']"));
 		  w.clear();  
 		  w.sendKeys("adpadp10"); 
 		  
 		  try {
 		  driver.findElement(By.xpath("//a[@id='submitButton']")).click();
 		  Thread.sleep(15000);
-		  
 		  driver.findElement(By.xpath("//li[@tabindex='0']")).click();
 		
 		  java.util.Set<String> allWindows = driver.getWindowHandles();
@@ -56,7 +57,8 @@ public class Login {
 				  	 
 			  }
 		  }
-		  //navigate to repeating invoice
+		  
+	//navigate to repeating invoice
 		  WebElement newInvoice = driver.findElement(By.id("ext-gen1037")).findElement(By.tagName("span"));
 		  newInvoice.click();
 		  java.util.Set<String> allWindows1 = driver.getWindowHandles();
@@ -69,7 +71,7 @@ public class Login {
 			  }
 		  }
 		  
-		  //create invoice
+	//create repeating invoice
 		  WebElement createInvoice = driver.findElement(By.id("PeriodUnit"));
 		  createInvoice.clear();
 		  createInvoice.sendKeys("2");
@@ -90,29 +92,26 @@ public class Login {
 		  createInvoice.sendKeys("testing1");
 		  Thread.sleep(2000);
 		  
+		  driver.findElement(By.xpath("//div[@class='x-grid3-body']")).findElement(By.xpath("//div[1]/table/tbody/tr/td[2]")).click();
+		  Thread.sleep(3000);
+		  createInvoice = driver.findElement(By.xpath("//div[@class='x-grid3-scroller']")).findElement(By.xpath("//div[2]/div/input[starts-with(@id, 'ext-')]"));
+		  createInvoice.sendKeys("Tools");
+		  createInvoice.sendKeys(Keys.RETURN);
+		  Thread.sleep(5000);
 		  
-		
-		 
-		driver.findElement(By.xpath("//div[@class='x-grid3-body']")).findElement(By.xpath("//div[1]/table/tbody/tr/td[2]")).click();
-		Thread.sleep(3000);
-		createInvoice = driver.findElement(By.xpath("//div[@class='x-grid3-scroller']")).findElement(By.xpath("//div[2]/div/input[starts-with(@id, 'ext-')]"));
-		createInvoice.sendKeys("Tools");
-		createInvoice.sendKeys(Keys.RETURN);
-		Thread.sleep(5000);
-		  
-		 driver.findElement(By.id("saveAsDraft")).click();
-		 driver.findElement(By.className("float-right")).findElement(By.tagName("button")).click();
-		 Thread.sleep(3000);
+		  driver.findElement(By.id("saveAsDraft")).click();
+		  driver.findElement(By.className("float-right")).findElement(By.tagName("button")).click();
+		  Thread.sleep(1000);
 		 
 		 		  
 		  } catch (InterruptedException e) {
 				e.printStackTrace();
-				System.out.println("Couldnt Reach to accounts");
+				System.out.println("Couldnt Create Invoice, Please try later");
 			}
 			 
 		  
 		 
-		 
 	 }
 }
-	  
+	  //*************** Thank a Lot **************/
+      //*************** Jaydeep **************/
